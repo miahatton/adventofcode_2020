@@ -3,7 +3,7 @@
 # read input file
 
 with open("inputs/day2.txt") as f:
-    # create dictionary of policies and passwords
+    # create list of policies and passwords
     policy_passwords = [line.split(': ') for line in f.read().splitlines()]
     
     
