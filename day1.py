@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dec  1 11:16:20 2020
-"""
-
 # Read input
 with open("inputs/day1.txt") as f:
     expenses = [int(num) for num in f.readlines()]
