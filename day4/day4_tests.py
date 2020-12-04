@@ -1,5 +1,4 @@
-from day4_funcs import year_validity_check, height_validity_check, colour_validity_check, pid_check, all_checks, read_input
-import re
+from day4_funcs import year_validity_check, height_validity_check, colour_validity_check, pid_check, all_checks
 from typing import List
 
 def test_year_validity():
@@ -26,12 +25,3 @@ def test_pid_validity():
 def test_passports(list_of_passports: List, valid: bool):
     for passport in list_of_passports:
         assert all_checks(passport) == valid, f"{passport} should be {'valid' if valid else 'invalid'}"
-    
-print(re.match('[0-9]{9}', '000000001') is not None)
-test_year_validity()
-test_height_validity()
-test_colour_validity()
-test_pid_validity()
-
-test_passports(read_input('inputs/valid_passports.txt'), True)
-test_passports(read_input('inputs/invalid_passports.txt'), False)

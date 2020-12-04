@@ -1,9 +1,11 @@
 import re
 from typing import List, Dict
 
-# read input
-
-def read_input(file_loc: str) -> List:
+def read_input(file_loc: str) -> List[Dict]:
+    """
+    Read lines from the input file, split into dictionaries of field/value pairs
+    Return list of dictionaries
+    """
     with open(file_loc, 'r') as f:
         passports = [
                 {
@@ -17,20 +19,30 @@ def read_input(file_loc: str) -> List:
     return passports
 
 def year_validity_check(year: str, field: str) -> bool:
+    """
+    Check that the year is valid, i.e. 4 digits and within specified timeframe
+    """
     if not re.match('\d{4}', year):
         return False
+    # Birth year between 1920 and 2002
     elif field == 'byr' and int(year) >= 1920 and int(year) <= 2002:
         return True
+    # Year of issue between 2010 and 2020
     elif field == 'iyr' and int(year) >= 2010 and int(year) <= 2020:
         return True
+    # Year of expiry between 2020 and 2030
     elif field == 'eyr' and int(year) >= 2020 and int(year) <= 2030:
         return True
     else:
         return False
 
 def height_validity_check(height: str) -> bool:
+    """
+    Check that height is valid i.e. digits followed by cm or in, within specified range
+    """
     if not re.match(r'\d+(cm|in)', height):
         return False
+    # extract digits
     num = int(height[:-2])
     if height[-2:] == 'cm' and num >= 150 and num <= 193:
         return True
@@ -40,28 +52,48 @@ def height_validity_check(height: str) -> bool:
         return False
 
 def colour_validity_check(color: str, field: str) -> bool:
+    """
+    Check that eye or hair colour is valid
+    """
+    # eye colour must be one of specified values
     if field == 'ecl' and color in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']:
         return True
+    # hair colour must be valid hex code
     elif field == 'hcl' and re.match('#[a-f0-9]{6}', color):
         return True
     else:
         return False
     
 def pid_check(pid: str) -> bool:
+    """
+    passport id must be a nine digit number
+    """
     if re.match(r'[0-9]{9}$', pid) is not None:
         return True
     else:
         return False
 
 def all_checks(passport: Dict) -> bool:
+    """
+    Perform checks on all fields and return True iff all fields are valid
+    """
     checks = [
-                year_validity_check(passport['byr'], 'byr'), year_validity_check(passport['iyr'], 'iyr'), year_validity_check(passport['eyr'], 'eyr'),
-                height_validity_check(passport['hgt']), colour_validity_check(passport['hcl'], 'hcl'), colour_validity_check(passport['ecl'], 'ecl'),
+                year_validity_check(passport['byr'], 'byr'), 
+                year_validity_check(passport['iyr'], 'iyr'), 
+                year_validity_check(passport['eyr'], 'eyr'),
+                height_validity_check(passport['hgt']), 
+                colour_validity_check(passport['hcl'], 'hcl'), 
+                colour_validity_check(passport['ecl'], 'ecl'),
                 pid_check(passport['pid'])
             ]
     return all(checks)
 
 def check_passports(passports: List, part: int) -> int:
+    """
+    First, loop through passports to check that all required fields are present
+    If part == 2, loop through passports with required fields and check validity
+    Return count of valid passports for given part.
+    """
     valid_passport_fields = []
     # part one
     for passport in passports:
