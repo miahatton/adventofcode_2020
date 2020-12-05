@@ -1,11 +1,8 @@
+from funcs import read_input
 # Day 2 - Password Philosphy
 
 # read input file
-
-with open("inputs/day2.txt") as f:
-    # create list of policies and passwords
-    policy_passwords = [line.split(': ') for line in f.read().splitlines()]
-    
+policy_passwords = [line.split(': ') for line in read_input('inputs/day2.txt')]  
     
 # Part one - count valid passwords based on policy being number of given letter allowed.
 valid_pws = 0

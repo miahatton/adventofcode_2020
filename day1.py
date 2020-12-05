@@ -1,6 +1,8 @@
+from funcs import read_input
+
 # Read input
-with open("inputs/day1.txt") as f:
-    expenses = [int(num) for num in f.readlines()]
+expenses = read_input('inputs/day1.txt', True)
+
 
 def find_solution():
     # loop through each entry and add to each other entry

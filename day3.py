@@ -1,3 +1,5 @@
+from funcs import read_input
+
 class RowOfTrees:
     def __init__(self, pattern):
         self.pattern = pattern
@@ -6,8 +8,7 @@ class RowOfTrees:
         self.pattern += self.pattern
 
 # get input
-with open('inputs/day3.txt', 'r') as f:
-    patterns = f.read().splitlines()
+patterns = read_input('inputs/day3.txt')
 
 def count_trees(input_strings, right, down):
     # list of RowOfTrees objects
