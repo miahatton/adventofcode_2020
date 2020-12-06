@@ -35,18 +35,17 @@ test_binary_converter()
 
 # for part two - create grid of seats
 plane = np.zeros((128,8))
+seat_ids = []
 
 # read input
 first = True
 for line in read_input('inputs/day5.txt'):
     ticket = Ticket(line)
     ticket_id = ticket.solve()
-    if first:
-        max_id = ticket_id
-        first = False
-    elif ticket_id > max_id:
-        max_id = ticket_id
+    seat_ids.append(ticket_id)
     plane[ticket.row_num, ticket.col_num] = 1
+
+max_id = max(seat_ids)
 
 print(f'The highest ticket ID is {max_id}')
 
