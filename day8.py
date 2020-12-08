@@ -45,14 +45,13 @@ class Code:
     
     def test_code(self, code_to_run):
         while self.index not in self.index_run:
-            print('\t'.join([str(x) for x in code_to_run[self.index]]))
             if code_to_run[self.index][0] == 'acc':
                 self.index = self.accumulator(self.index, code_to_run)
             elif code_to_run[self.index][0] == 'jmp':
                 self.index = self.jump(self.index, code_to_run)
             else:
                 self.index = self.nop(self.index)
-            if self.index == len(code_to_run) - 1:
+            if self.index == len(code_to_run): # - 1:
                 return True
         return False
     
@@ -61,9 +60,6 @@ class Code:
         code_fixed = False
         while not code_fixed:
             self.reset()
-            print(self.code)
-            for line in self.temp_code:
-                print(line)
             if len(index_changed) == 0:
                 temp_index = 0
             else:
@@ -80,9 +76,13 @@ class Code:
                 self.temp_code[temp_index] = ('nop', self.temp_code[temp_index][1])
             code_fixed = self.test_code(self.temp_code)
         return self.acc
-        
-    
 
+# run tests
+test_program = Code(read_input('inputs/day8_test.txt'))
+test_program.test_code(test_program.code)
+assert test_program.acc == 5, f"Accumulator is {test_program.acc}, should be 5"
+assert test_program.fix_code() == 8, f"Accumulator is {test_program.acc}, should be 8"
+print("Tests complete\n\nDAY 8 SOLUTION")
 
 program = Code(read_input('inputs/day8.txt'))
 program.test_code(program.code)
