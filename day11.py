@@ -10,9 +10,9 @@ for seat_row in seats:
         this_row.append(char)
     rows.append(this_row)
 
-seat_array = np.array(rows)
-    
-print(seat_array)
+def show_the_array(array):
+    for i in range(array.shape[0]):
+        print(array[i])
 
 def list_surrounds(seat_array, i, j):
     surround_pairs =  [(j+1, i-1), (j+1, i), (j+1, i+1), 
@@ -21,13 +21,14 @@ def list_surrounds(seat_array, i, j):
     surrounding_seats = []
     for pair in surround_pairs:
         try:
-            surrounding_seats.append(seat_array[pair[0], pair[1]])
+            if pair[1] != -1 and pair[0] != -1:
+                surrounding_seats.append(seat_array[pair[1], pair[0]])
         except IndexError:
             continue
     return surrounding_seats
 
 def occupy(seat_array):
-    new_array = seat_array.copy()
+    new_array = seat_array.copy(order = 'F')
     for j in range(seat_array.shape[0]): # loop through row numbers
         for i in range(seat_array.shape[1]): # loop through column numbers
             if seat_array[j, i] == '.':
@@ -35,20 +36,20 @@ def occupy(seat_array):
                 continue # ignore the floor
             # list surrounding seats
             surround = list_surrounds(seat_array, i, j)
-            if seat_array[j,i] == 'L':
-                if surround.count('#') == 0:
+            if seat_array[j,i] == 'L' and surround.count('#') == 0:
                     new_array[j, i] = '#'
-                else:
+            elif seat_array[j, i] == '#' and surround.count('#') >= 4:
                     new_array[j, i] = 'L'
-            elif seat_array[j, i] == '#':
-                if surround.count('#') >= 4:
-                    new_array[j, i] = 'L'
-                else:
-                    new_array[j, i] = '#'
+            else:
+                new_array[j, i] = seat_array[j,i]
     return new_array
-        
+    
+seat_array = np.array(rows)
+    
+show_the_array(seat_array)
+    
 print()
 new_array = occupy(seat_array)
-print(new_array)
+show_the_array(new_array)
 print()
-print(occupy(new_array))
+show_the_array(occupy(new_array))
