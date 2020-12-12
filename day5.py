@@ -6,8 +6,6 @@ class Ticket:
         self.boarding_pass = code
         self.binary_row = code[:-3].replace('F', '0').replace('B', '1')
         self.binary_col = code[-3:].replace('L', '0').replace('R', '1')
-        self.row_num = 0
-        self.col_num = 0
         self.id = 0
     def binary_converter(self, bin_num: str) -> int:
         dec_num = 0
@@ -36,6 +34,7 @@ test_binary_converter()
 # for part two - create grid of seats
 plane = np.zeros((128,8))
 seat_ids = []
+seats = []
 
 # read input
 first = True

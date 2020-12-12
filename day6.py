@@ -1,8 +1,8 @@
 # Day 6
+from funcs import read_input
 
 # read input
-with open('inputs/day6.txt', 'r') as f:
-    part_two_answers = f.read().split('\n\n')
+part_two_answers = read_input('inputs/day6.txt', sep = '\n\n')
 
 # join individual answers together into a single string per group for part one
 part_one_answers = [
