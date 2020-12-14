@@ -16,9 +16,20 @@ class Memory:
             dec_num += x * int(bin_num[i])
             x *= 2
         return dec_num
+    def decimal_converter(self, dec_num: str) -> str:
+        dec_num = int(dec_num)
+        bin_num = ''
+        while dec_num > 0:
+            if dec_num % 2 == 1:
+                bin_num = '1' + bin_num
+            else:
+                bin_num = '0' + bin_num
+            dec_num //= 2
+        while len(bin_num)< 36:
+            bin_num = '0' + bin_num
+        return bin_num
     def apply_mask(self, dec_num: str) -> str:
-        # TODO convert dec_num to bin_num
-        bin_num = str(dec_num)
+        bin_num = self.decimal_converter(dec_num)
         chars = [char for char in bin_num]
         for i in range(36):
             if self.mask[i] != 'X':
@@ -32,7 +43,7 @@ class Memory:
             self.dec_memory += self.binary_converter(v)
         print(self.dec_memory)
         
-instructions = [line.split(" = ") for line in read_input('inputs/day14_test.txt')]
+instructions = [line.split(" = ") for line in read_input('inputs/day14.txt')]
         
 memory = Memory()
     
