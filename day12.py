@@ -6,6 +6,8 @@ class Ship:
         self.direction = 0  # E = 0, S = 90, W = 180, N = 270
         self.position = {0: 0, 90: 0, 180: 0, 270: 0}
         self.direction_map = dict(E = 0, S = 90, W = 180, N = 270)
+        self.x_pos = []
+        self.y_pos = []
     def change_direction(self, rotate_dir: str, degrees: int):
         while degrees > 0:
             if rotate_dir == 'R':
@@ -58,6 +60,9 @@ class ShipWithWaypoint(Ship):
         else:
             movement_dir = self.direction_map[direction_in_instructions]
             self.waypoint_pos[movement_dir] += distance
+    def update_position(self):
+        self.x_pos.append(self.position[180] - self.position[0])
+        self.y_pos.append(self.position[270] - self.position[90])
 
 
 instructions = read_input('inputs/day12.txt')
@@ -68,15 +73,25 @@ print(ship.position)
 print("Waypoint position: ", end = '\t')
 print(ship.waypoint_pos)
 print()
-    
+
+i = 0
 for step in instructions:
-    print(step)
+    if i< 10:
+        print(step)
     ship.read_instruction(step)
-    print("Ship position: ", end = '\t\t')
-    print(ship.position)
-    print("Waypoint position: ", end = '\t')
-    print(ship.waypoint_pos)
-    print()
+    if i< 10:
+        print("Ship position: ", end = '\t\t')
+        print(ship.position)
+        print("Waypoint position: ", end = '\t')
+        print(ship.waypoint_pos)
+        print()
+    i += 1
+    ship.update_position()
     
 ship.calculate_manhattan()
 print(sum(ship.manhattan))
+
+import matplotlib.pyplot as plt
+
+plt.plot(ship.x_pos, ship.y_pos)
+plt.show()
