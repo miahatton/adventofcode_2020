@@ -15,25 +15,19 @@ for k, v in rules.items():
 
 invalid_count = 0
 
+print(len(nearby_tickets), " tickets.")
 
-def check_validity(val: int, rules: Dict[str, List], part = 1) -> int:
+def check_validity(val: int, rules: Dict[str, List]) -> int:
     validity_count = len(rules.keys())
-    valid_fields = []
     for k, rule in rules.items():
         if val > rule[0][1] and val < rule[1][0]:
             validity_count -= 1
         if val < rule[0][0] or val > rule[1][1]:
             validity_count -= 1
-        else:
-            if part == 2:
-                valid_fields.append(k)
-    if part == 1:
-        if validity_count == 0:
-            return False
-        else:
-            return True
+    if validity_count == 0:
+        return False
     else:
-        return valid_fields
+        return True
 
 # Part One
 for ticket in nearby_tickets:
@@ -53,22 +47,20 @@ print("*"*20, " Part Two ", "*"*20)
 valid_tickets = []
 
 for i in range(len(nearby_tickets)):
+    valid = True
     for val in nearby_tickets[i]:
-        val = int(val)
-        if check_validity(val, rules):
-            valid_tickets.append(ticket)
+        if not check_validity(int(val), rules):
+            valid = False
+    if valid:
+        valid_tickets.append(ticket)
 
 # track which field could be which
-fields = []
 
-print(valid_tickets[0])
+print(len(valid_tickets), " tickets left." )
+
 
 for ticket in valid_tickets:
-    valid_fields = []
     for val in ticket:
-        val = int(val)
-        valid_fields.append(check_validity(val, rules, 2))
-    fields.append([valid_fields])
-
-test_row = fields[0]
-
+        possible_fields = rules.keys()
+        
+    
