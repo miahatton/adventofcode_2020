@@ -1,20 +1,17 @@
 # Day 16
 from typing import List, Dict
 
-with open('inputs/day16_test2.txt') as f:
+with open('inputs/day16.txt') as f:
     rules, ticket, nearby_tickets = f.read().split('\n\n')
     
 rules = {k: v.split(' or ') for k, v in [rule.split(': ') for rule in rules.split('\n')]}
-ticket = ticket.split('\n')[1].split(',')
+my_ticket = ticket.split('\n')[1].split(',')
 nearby_tickets = [t.split(',') for t in nearby_tickets.split('\n')[1:]]
 
 for k, v in rules.items():
     # give rules format {rule: [[min, max], [min, max]]}
     rules[k][0] = [int(x) for x in rules[k][0].split('-')]
     rules[k][1] = [int(x) for x in rules[k][1].split('-')]
-
-for k, v in rules.items():
-    print(k, v)
 
 invalid_count = 0
 
@@ -59,36 +56,40 @@ for i in range(len(nearby_tickets)):
 
 # track which field could be which
 
-print(len(valid_tickets), " tickets left." )
-print(valid_tickets)
 possible_fields = {}
 
+# put all valid fields into list for each position on the ticket
 for i in range(len(valid_tickets[0])):
+    # make lists of values for each position
     position = [x[i] for x in valid_tickets]
-    print("Position", i, position)
+    # start with all fields
     position_fields = list(rules.keys())
     for val in position:
         for field in rules.keys():
             if field in position_fields:
+                # check validity of value against each field
                 if not check_validity(int(val), {field: rules[field]}):
+                    # remove invalid fields
                     position_fields.pop(position_fields.index(field))
     possible_fields[i] = position_fields
-    print(f'Position {i} could be {possible_fields[i]}')
-   
-print(possible_fields)    
 
-while all([len(x) == 1 for x in possible_fields.values()]):
+# if any position holds only one field, remove that field from all other positions
+# repeat until each position holds only one field
+while not all([len(x) == 1 for x in possible_fields.values()]):
     unique = []
     for k, v in sorted(possible_fields.items(), key = lambda x: len(x[1])):
         if len(v) == 1:
             unique.append(v[0])
         else:
-            remove = []
-            for i in range(len(v)):
-                if v[i] in unique:
-                    remove.append(i)
+            remove = [i for i in range(len(v)) if v[i] in unique]
             for i in remove:
                 v.pop(i)
             
-print(possible_fields)
+departure_fields = 1
+
+for i in range(len(my_ticket)):
+    if 'departure' in possible_fields[i][0]:
+        departure_fields *= int(my_ticket[i])
+        
+print(departure_fields)
             
