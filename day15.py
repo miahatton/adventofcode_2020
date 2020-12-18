@@ -13,26 +13,22 @@ class NumberGame:
         print(f"New number game!\tStarting numbers: {self.numbers_in_game}")
     def reset(self):
         self.__init__(self.starting_numbers)
-    def get_nth_number(self, n):
+    def get_nth_number(self, n: int) -> int:
         print("Playing Number Game")
         while self.turn <= n:
-            #print(f"Turn: {self.turn}\tLast number: {self.last_number}\tAll numbers: {self.numbers_in_game}")
-            #print(f"The player considers whether or not {self.last_number} has been said before")
             # consider the most recently spoken number (self.last_number)
             if self.numbers_in_game[self.last_number][1]:
-                #print("It has been said before. The player finds the difference between this and the previous turn")
+                # It has been said before. The player finds the difference between this and the previous turn
                 current_number = self.numbers_in_game[self.last_number][0] - self.numbers_in_game[self.last_number][1]
             else:
-                #print("It has been not said before. The next number is 0")
+                # It has been not said before. The next number is 0
                 current_number = 0
             # now record the answer 
-            #print("The player records the answer")
-            # if this answer is new
             if current_number not in self.numbers_in_game.keys():
-                #print(f"This number is new. Adding record: {current_number}: {(self.turn, None)}")
+                # This number is new. Add to dictionary this number: (turn number, None)
                 self.numbers_in_game[current_number] = (self.turn, None)
             else:
-                #print(f"This number is not new. Updating record: {current_number}: {(self.turn, self.numbers_in_game[current_number][0])}")
+                 # This number is not new. Update dictionary this number: (turn number, previous turn number)
                 self.numbers_in_game[current_number] = (self.turn, self.numbers_in_game[current_number][0])
             # add one to turn
             self.turn += 1
@@ -54,8 +50,10 @@ run_tests()
 starting_numbers = [9,6,0,10,18,2,1]
 
 # part_one
+print("Part one")
 number_game = NumberGame(starting_numbers)
 print(number_game.get_nth_number(2020))
 
 # part_two
+print("Part two")
 print(number_game.get_nth_number(30000000))
