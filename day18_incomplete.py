@@ -9,17 +9,18 @@ def deal_with_brackets(problem, partnum: int):
     inside_bracket = str(do_math(expression[1:-1], partnum))
     return problem.replace(expression, inside_bracket)
 
-def addition(problem):
+def perform_addition(problem):
     expression = re.search("\d+ \+ \d+", problem).group(0)
+    before, after = problem.split(expression, maxsplit = 1)
     new_val = sum([int(x) for x in expression.split(' + ')])
-    return problem.replace(expression, str(new_val))
+    return before + str(new_val) + after
 
 def reduce_math(problem, partnum: int):
     while "(" in problem:
         problem = deal_with_brackets(problem, partnum)
     if partnum == 2:
         while "+" in problem:
-            problem = addition(problem)
+            problem = perform_addition(problem)
     return problem
 
 def get_acc_and_remove(problem):
