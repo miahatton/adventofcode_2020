@@ -3,22 +3,27 @@ from funcs import read_input
 
 earliest, bus_numbers = read_input('inputs/day13.txt')
 earliest = int(earliest)
-bus_numbers = [int(bus) for bus in bus_numbers.split(',') if bus != 'x']
 
-bus_timings = [0] * len(bus_numbers) # used to add timestamp in loop
-first_bus = [0] * len(bus_numbers) # store the first bus after the departure time for each id
+class Bus:
+    def __init__(self, id):
+        self.depart_times = [0]
+        self.id = id
+        while self.depart_times[-1] < earliest:
+            self.depart_times.append(self.depart_times[-1] + id)
+        self.earliest_depart = self.depart_times[-1]
 
+bus_numbers = [Bus(int(bus)) for bus in bus_numbers.split(',') if bus != 'x']
 
-bus_numbers_to_try = list(range(0, len(bus_numbers))) # store indexes
+print("Part one")
 
+earliest_bus = bus_numbers[-1].earliest_depart
 
-while len(bus_numbers_to_try) > 0:
-    for i in bus_numbers_to_try:
-        bus_timings[i] += bus_numbers[i]
-        if bus_timings[i] > earliest:
-            bus_numbers_to_try.remove(i)
-    print(bus_timings)
+for bus in bus_numbers:
+    if bus.earliest_depart < earliest_bus:
+        bus_to_take = bus
+        
+wait = bus_to_take.earliest_depart - earliest
 
-bus_to_take = first_bus.index(min(first_bus))
+print(f"Earliest departure is bus number {bus_to_take.id} at {bus_to_take.earliest_depart} so the wait is {wait}.")
 
-print((bus_timings[bus_to_take] - earliest) * bus_numbers[bus_to_take])
+print(f"Solution is {wait * bus_to_take.id}")
